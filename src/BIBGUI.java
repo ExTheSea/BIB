@@ -19,6 +19,7 @@ public class BIBGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTable Ttable;
+	private JButton btnNotAvailable;
 
 	/**
 	 * Launch the application.
@@ -56,19 +57,56 @@ public class BIBGUI extends JFrame {
 		));
 		
 		
+		BIBDB.createsample();
 		
-		JButton btnTest = new JButton("Test");
-		btnTest.addActionListener(new ActionListener() {
+		JButton btnListAll = new JButton("listAll");
+		btnListAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultTableModel ModelTest = (DefaultTableModel) Ttable.getModel();
+				ModelTest.setRowCount(0);
 //				Ttable.setModel(new DefaultTableModel());
-				ModelTest.addRow(new Object[]{"1","Die Blutlinie",  "Cody McFadyen", "Lübek", "2008", "Mosbach", "n"});
-				ModelTest.addRow(new Object[]{"2","Der Menschenmacher",  "Cody McFadyen", "Lübek", "2010", "Mosbach", "n"});
-				ModelTest.addRow(new Object[]{"3","Ausgelöscht",  "Cody McFadyen", "Lübek", "2012", "Mosbach", "j"});
-				ModelTest.addRow(new Object[]{"4","Das Böse in Uns",  "Cody McFadyen", "Lübek", "2013", "Mosbach", "n"});
-				ModelTest.addRow(new Object[]{"5","xxx",  "Marius Reinwald", "Mosbach", "2014", "Mosbach", "n"});
+//				ModelTest.addRow(new Object[]{"1","Die Blutlinie",  "Cody McFadyen", "Lübek", "2008", "Mosbach", "n"});
+//				ModelTest.addRow(new Object[]{"2","Der Menschenmacher",  "Cody McFadyen", "Lübek", "2010", "Mosbach", "n"});
+//				ModelTest.addRow(new Object[]{"3","Ausgelöscht",  "Cody McFadyen", "Lübek", "2012", "Mosbach", "j"});
+//				ModelTest.addRow(new Object[]{"4","Das Böse in Uns",  "Cody McFadyen", "Lübek", "2013", "Mosbach", "n"});
+//				ModelTest.addRow(new Object[]{"5","Java for Hillbillies",  "Marius Reinwald", "Mosbach", "2014", "Mosbach", "n"});
+				Object[] arr = BIBDB.getAll();
+				for (int i = 0; i < arr.length; i++) {
+					Object[] iarr = (Object[])arr[i];
+					ModelTest.addRow(iarr);
+				}
 				
-				
+			}
+		});
+		
+		JButton btnAvailable = new JButton("listAvailable");
+		btnAvailable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DefaultTableModel ModelTest = (DefaultTableModel) Ttable.getModel();
+				ModelTest.setRowCount(0);
+				Object[] arr = BIBDB.getNotLend();
+				for (int i = 0; i < arr.length; i++) {
+					Object[] iarr = (Object[])arr[i];
+					ModelTest.addRow(iarr);
+				}
+			}
+		});
+		
+		btnNotAvailable = new JButton("listNotAvailable");
+		btnNotAvailable.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				DefaultTableModel ModelTest = (DefaultTableModel) Ttable.getModel();
+				Ttable.setModel(new DefaultTableModel(BIBDB.getLend(), 
+			new String[] {
+				"ID","Titel", "Autor", "Verlag", "Jahr", "Standort", "ausgeliehen"
+			}));
+//				ModelTest.setRowCount(0);
+////				ModelTest.
+//				Object[] arr = BIBDB.getLend();
+//				for (int i = 0; i < arr.length; i++) {
+//					Object[] iarr = (Object[])arr[i];
+//					ModelTest.addRow(iarr);
+//				}
 			}
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -76,21 +114,28 @@ public class BIBGUI extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnTest)
-					.addPreferredGap(ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-					.addComponent(Ttable, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(Ttable, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(btnListAll, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAvailable, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnNotAvailable, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap(21, Short.MAX_VALUE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(Ttable, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnTest))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnListAll)
+						.addComponent(btnAvailable)
+						.addComponent(btnNotAvailable))
+					.addGap(18)
+					.addComponent(Ttable, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
-
 }
