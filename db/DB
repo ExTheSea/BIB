@@ -1,0 +1,8 @@
+Create Table Buch(
+ID  IDENTITY,
+Autor char(50),
+Titel char(50),
+Verlag char(50),
+Jahr char(4),
+Standort char(50)
+)
